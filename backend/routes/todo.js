@@ -54,7 +54,10 @@ route.put("/:id", async (req, res) => {
     try {
         const updatedTodo = await todomodel.findByIdAndUpdate(
             req.params.id,
-            { task: req.body.task },
+            {
+                task: req.body.task,
+                status: req.body.status || false, // Set a default value if status is not provided
+            },
             { new: true }
         );
 
@@ -67,6 +70,7 @@ route.put("/:id", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
 
 
 module.exports=route;
