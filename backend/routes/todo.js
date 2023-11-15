@@ -9,23 +9,28 @@ route.get("/",async (req,res)=>{
     }
     catch(err){
         res.status(500).json({"err":err.message})
-    }
-    
+    } 
 })
 
 route.post("/", async (req,res)=>{
     try
     {
-        const create=new todomodel({
-        "task":req.body.task
-    })
-    const result=await create.save()
-    res.status(200).json(result)
-}
+        if(req.body.task)
+        {
+            const create=new todomodel({
+                "task":req.body.task
+            })
+            const result=await create.save()
+            res.status(200).json(result)
+        }
+        else{
+            res.status(400).json({error:"Please enter task..."})
+        }
+        
+    }
     catch(err){
         res.status(500).json({"err":err.message})
     }
-    
 })
 
 route.get("/:id",async (req,res)=>{
@@ -56,7 +61,7 @@ route.put("/:id", async (req, res) => {
             req.params.id,
             {
                 task: req.body.task,
-                status: req.body.status || false, // Set a default value if status is not provided
+                status: req.body.status || false, 
             },
             { new: true }
         );
